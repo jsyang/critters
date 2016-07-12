@@ -1,0 +1,19 @@
+{
+    "name": "critters",
+    "description": "Procedurally generated creatures",
+    "version": "0.1.0",
+    "devDependencies": {
+        "grunt": "~0.4.5",
+        "grunt-cli": "~0.1.13",
+        "grunt-contrib-clean": "~0.6.0",
+        "grunt-contrib-jshint": "~0.11.2",
+        "grunt-contrib-watch": "~0.6.0",
+        "grunt-exec": "~0.4.6",
+        "grunt-contrib-less": "~1.0.0",
+        "grunt-md2html": "~0.2.2",
+        "grunt-browserify": "^5.0.0",
+        "grunt-http-server": "^2.0.0",
+        "load-grunt-config": "^0.19.2",
+        "load-grunt-tasks": "^3.5.0"
+    }
+}

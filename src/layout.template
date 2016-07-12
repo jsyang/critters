@@ -1,0 +1,10 @@
+<html>
+<title>jsyang.ca/critters</title>
+<script src="main.js"></script>
+<link rel="stylesheet" href="main.css"/>
+<body>
+
+<%= document %>
+
+</body>
+</html>

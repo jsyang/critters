@@ -1,0 +1,10 @@
+build:
+  - exec:copyAssets
+  - md2html
+  - less
+  - browserify
+
+default:
+  - build
+  - http-server
+  - watch
