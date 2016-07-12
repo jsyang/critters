@@ -18,12 +18,19 @@ At the end of all this I would like to be left with:
  - most recent relationships between the different species (if any)
  - an evolutionary tree depicting the evolution of such creatures
 
-## World generation
+
+## 1. World generation
 Before we can start generating creatures, we need to define characteristics of the environments
 they will live in. To do this we need to generate a world and then environments within that world
 so the creatures that are created don't seem as contrived.
 
+The world must contain some media for life to be viable. The three states of matter are solid,
+liquid, gas. To simplify showing the areas of the world, we will represent it as a set of 2D tiles.
+
+<script>
+document.write(app.getPlanet());
+</script>
+
 <script>
 document.close();
 </script>
-

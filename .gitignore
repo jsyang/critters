@@ -3,5 +3,3 @@ node_modules
 .idea
 **/*.swp
 build/
-*.gpx
-*.xml
