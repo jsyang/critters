@@ -1,7 +1,32 @@
 #planet {
+  font-size   : 0;
+  font-family : monospace;
+  background  : black;
+  color       : white;
 
-    font-size: 10px;
-    font-family: monospace;
-    background: black;
-    color: white;
+  .tile {
+    font-size   : 10px;
+    display     : inline-block;
+    width       : 16px;
+    height      : 16px;
+    text-align  : center;
+    line-height : 16px;
+
+    &[data-level="0"] {
+      background-color : #0000cc;
+    }
+    &[data-level="1"] {
+      background-color : sandybrown;
+    }
+    &[data-level="2"] {
+      background-color : lightgreen;
+    }
+    &[data-level="3"] {
+      background-color : darkolivegreen;
+    }
+    &[data-level="4"] {
+      background-color : saddlebrown;
+    }
+  }
+
 }

@@ -12,8 +12,8 @@ document.open();
 </script>
 
 
-At the end of all this I would like to be left with:
- - a full progression of steps leading to a set of procedurally generated creatures
+At the end of all this I would like to end up with:
+ - a full progression of steps leading to a set of procedurally generated creatures (sort of in a literate programming style)
  - a plausible world and environments that contain these creatures
  - most recent relationships between the different species (if any)
  - an evolutionary tree depicting the evolution of such creatures
@@ -26,6 +26,8 @@ so the creatures that are created don't seem as contrived.
 
 The world must contain some media for life to be viable. The three states of matter are solid,
 liquid, gas. To simplify showing the areas of the world, we will represent it as a set of 2D tiles.
+To make inspecting a particular tile easier, each tile should be clickable and should reveal a cross-sectional
+composition of that tile when clicked.
 
 <script>
 document.write(app.getPlanet());
