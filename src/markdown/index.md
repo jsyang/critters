@@ -28,9 +28,7 @@ The world must contain some media for life to be viable. The three states of mat
 liquid, gas. To simplify showing the areas of the world, we will represent it as a set of 2D tiles.
 The tiles are color coded based on height.
 
-This color scheme is generated via [Color Brewer 2](http://colorbrewer2.org/), using the settings:
-- Number of data classes = 6
-- Multi-hue scheme = third gradient from the top-left
+This color scheme is based on the multi-hue color scheme on [Color Brewer 2](http://colorbrewer2.org/).
 
 <script>
 document.write(app.planet.get());
@@ -38,8 +36,10 @@ document.write(app.planet.get());
 document.write(app.planet.getColorCSS());
 </script>
 
-As a side node: the range for each of the colors representing height is determined by quantizing
-To fast forward the process of equilibrium in this world we must put it through several cycles of simulated erosion.
+As a side node: the range for each of the colors representing height is determined by quantizing the heights.
+
+The next step to make this land mass distribution more realistic is to fast forward the process of equilibrium.
+We must put it through several cycles of simulated erosion.
 
 <script>
 app.planet.erode();
