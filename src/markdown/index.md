@@ -26,12 +26,38 @@ so the creatures that are created don't seem as contrived.
 
 The world must contain some media for life to be viable. The three states of matter are solid,
 liquid, gas. To simplify showing the areas of the world, we will represent it as a set of 2D tiles.
-To make inspecting a particular tile easier, each tile should be clickable and should reveal a cross-sectional
-composition of that tile when clicked.
+The tiles are color coded based on height.
+
+This color scheme is generated via [Color Brewer 2](http://colorbrewer2.org/), using the settings:
+- Number of data classes = 6
+- Multi-hue scheme = third gradient from the top-left
 
 <script>
-document.write(app.getPlanet());
+document.write(app.planet.get());
+
+document.write(app.planet.getColorCSS());
 </script>
+
+As a side node: the range for each of the colors representing height is determined by quantizing
+To fast forward the process of equilibrium in this world we must put it through several cycles of simulated erosion.
+
+<script>
+app.planet.erode();
+document.write(app.planet.get());
+</script>
+
+## 2. Primordial soup
+Before we can create plausible multi-cellular organisms, we must first think about the organisms
+that came before them: the beginnings of life itself. How did it happen?
+
+We can model the evolution of our system via the timeline of evolution as it is thought to have happened in
+reality: [Timeline of the evolutionary history_of life](https://en.wikipedia.org/wiki/Timeline_of_the_evolutionary_history_of_life)
+
+At this stage, we have a generated world which has gone through several stages of erosion, roughly corresponding to
+the phase represented by *4100 - 3800 Ma* in this timeline.
+
+## 3. Creature definition
+
 
 <script>
 document.close();

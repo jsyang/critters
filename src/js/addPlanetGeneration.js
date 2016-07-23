@@ -1,24 +1,13 @@
-// todo: add tectonics
+var _ = require('lodash/array');
+
+var APP;
 
 var PLANET = {
-    WIDTH  : 30,
-    HEIGHT : 24
+    WIDTH: 32,
+    HEIGHT: 28,
+    DEFAULT_TILE_MASS: 50
 };
 
-function initPlanetMassArray() {
-    this.state.planetMassArray = [];
-
-    for (var h = 0; h < PLANET.HEIGHT; h++) {
-        var massArrayRow = [];
-        for (var w = 0; w < PLANET.WIDTH; w++) {
-            massArrayRow.push({
-                land  : 0,
-                water : 0
-            });
-        }
-        this.state.planetMassArray.push(massArrayRow);
-    }
-}
 
 /**
  * @param {number} x
@@ -39,7 +28,7 @@ function addMassToTile(x, y, mass) {
     if (y >= PLANET.HEIGHT) {
         y = y % PLANET.HEIGHT;
     }
-    this.state.planetMassArray[y][x].land += mass;
+    APP.planet.tiles[y][x] += mass;
 }
 
 /**
@@ -48,131 +37,205 @@ function addMassToTile(x, y, mass) {
  * @param {number} mass
  */
 
-var PROBABILITY_EDGE_FILL = 0.8;
-
 function addMassToRegion(x, y, mass) {
-    addMassToTile.call(this, x, y, mass);
+    addMassToTile(x, y, mass);
 
-    if (mass > 1) {
-        var extraMass = function () {
-            return Math.random() < PROBABILITY_EDGE_FILL ? (0.5 * mass) : 0;
-        };
-
-        addMassToTile.call(this, x - 1, y - 1, extraMass());
-        addMassToTile.call(this, x, y - 1, extraMass());
-        addMassToTile.call(this, x + 1, y - 1, extraMass());
-        addMassToTile.call(this, x - 1, y, extraMass());
-        addMassToTile.call(this, x + 1, y, extraMass());
-
-        addMassToTile.call(this, x - 1, y + 1, extraMass());
-        addMassToTile.call(this, x, y + 1, extraMass());
-        addMassToTile.call(this, x + 1, y + 1, extraMass());
+    function extraMass() {
+        return (Math.random() * 50 + 25) * 0.01 * mass;
     }
+
+    function extraMass2() {
+        return (Math.random() * 25) * 0.01 * mass;
+    }
+
+    // 8 tiles around the center
+    addMassToTile(x - 1, y - 1, extraMass());
+    addMassToTile(x, y - 1, extraMass());
+    addMassToTile(x + 1, y - 1, extraMass());
+
+    addMassToTile(x - 1, y, extraMass());
+    addMassToTile(x + 1, y, extraMass());
+
+    addMassToTile(x - 1, y + 1, extraMass());
+    addMassToTile(x, y + 1, extraMass());
+    addMassToTile(x + 1, y + 1, extraMass());
+
+    // Another perimeter
+    addMassToTile(x - 2, y - 2, extraMass2());
+    addMassToTile(x - 1, y - 2, extraMass2());
+    addMassToTile(x, y - 2, extraMass2());
+    addMassToTile(x + 1, y - 2, extraMass2());
+    addMassToTile(x + 2, y - 2, extraMass2());
+
+    addMassToTile(x - 2, y - 1, extraMass2());
+    addMassToTile(x + 2, y - 1, extraMass2());
+
+    addMassToTile(x - 2, y, extraMass2());
+    addMassToTile(x + 2, y, extraMass2());
+
+    addMassToTile(x - 2, y + 1, extraMass2());
+    addMassToTile(x + 2, y + 1, extraMass2());
+
+    addMassToTile(x - 2, y + 2, extraMass2());
+    addMassToTile(x - 1, y + 2, extraMass2());
+    addMassToTile(x, y + 2, extraMass2());
+    addMassToTile(x + 1, y + 2, extraMass2());
+    addMassToTile(x + 2, y + 2, extraMass2());
+
 }
 
 function walkFaultLine() {
-    var startingEdge = 'NESW'[(Math.random() * 4) >> 0];
-    var isBigWalk    = Math.random() < 0.25;
+    var startingEdge = 'NESW' [(Math.random() * 4) >> 0];
 
-    var x, y;
-    var dx = Math.random();
-    var dy = Math.random();
+    var x = Math.random() * PLANET.WIDTH;
+    var y = Math.random() * PLANET.HEIGHT;
+    var dx = Math.random() - Math.random();
+    var dy = Math.random() - Math.random();
 
-    if (startingEdge === 'N') {
-        x = Math.floor(Math.random() * PLANET.WIDTH);
-        y = 0;
-        if (Math.random() < 0.5) {
-            dx *= -1;
-        }
-    } else if (startingEdge === 'E') {
-        x = PLANET.WIDTH - 1;
-        y = Math.floor(Math.random() * PLANET.HEIGHT);
-        dy *= -1;
-        if (Math.random() < 0.5) {
-            dx *= -1;
-        }
-    } else if (startingEdge === 'S') {
-        x = Math.floor(Math.random() * PLANET.WIDTH);
-        y = PLANET.HEIGHT - 1;
-        dy *= -1;
-        if (Math.random() < 0.5) {
-            dx *= -1;
-        }
-    } else if (startingEdge === 'W') {
-        x = 0;
-        y = Math.floor(Math.random() * PLANET.HEIGHT);
-        if (Math.random() < 0.5) {
-            dy *= -1;
-        }
-    }
-
-    var steps = Math.floor(Math.random() * Math.max(PLANET.WIDTH, PLANET.HEIGHT) * 0.4) + 10;
+    var steps = Math.max(Math.random() * 0.5 * PLANET.WIDTH, 4);
 
     for (; steps > 0; steps--) {
-        addMassToRegion.call(this, Math.round(x), Math.round(y), isBigWalk ? 2 : 1);
-        x += dx;
-        y += dy;
+        addMassToRegion(
+            Math.round(x),
+            Math.round(y),
+            Math.max(10, Math.random() * 60)
+        );
+        x += dx * 2;
+        y += dy * 2;
     }
 }
+
+/** @type {number[]} **/
+var COLOR_QUANTILES = [];
 
 function getColorLevel(value) {
-    var level = 0;
-
-    if (value > 1) {
-        level = 1;
-    }
-    if (value > 3) {
-        level = 2;
-    }
-    if (value > 6) {
-        level = 3;
-    }
-    if (value > 11) {
-        level = 4;
-    }
-
-    return level;
+    for (var i = 0; value > COLOR_QUANTILES[i]; i++) {}
+    return Math.max(i - 1, 0);
 }
 
-function getPlanetMassTileHTML(tile) {
-    return [
-        '<span class="tile" data-level="' + getColorLevel(tile.land) + '">',
-        tile.land + tile.water,
-        '</span>'
-    ].join('\n');
+function computeColorLevelRanges() {
+    var sortedTileValues = _.flatten(APP.planet.tiles).sort(function(a, b) {
+        return a - b;
+    });
+    var uniqueValues = _.uniq(sortedTileValues);
+    var probabilityOfValues = [];
+    var lastValueIndex = 0;
+
+    uniqueValues
+        .forEach(function(value) {
+            var lastIndexOfCurrentValue = sortedTileValues.lastIndexOf(value);
+
+            probabilityOfValues.push(
+                (lastIndexOfCurrentValue - lastValueIndex + 1) / sortedTileValues.length
+            );
+
+            lastValueIndex = lastIndexOfCurrentValue;
+        });
+
+    var cumulativeProbability = 0;
+    var quantile = 1;
+
+    probabilityOfValues
+        .forEach(function(p, i) {
+            cumulativeProbability += p;
+            if (cumulativeProbability > quantile / 6) {
+                COLOR_QUANTILES.push(uniqueValues[i]);
+                quantile++;
+            }
+        });
 }
 
-function getPlanetMassArrayRowHTML(row) {
+var R2 = 255;
+var G2 = 255;
+var B2 = 204;
+
+var R1 = 8;
+var G1 = 104;
+var B1 = 172;
+
+function getColorCSS() {
+
+    var dR = (R2 - R1) / (COLOR_QUANTILES.length + 1);
+    var dG = (G2 - G1) / (COLOR_QUANTILES.length + 1);
+    var dB = (B2 - B1) / (COLOR_QUANTILES.length + 1);
+
+    var css = COLOR_QUANTILES
+        .map(function(v, i) {
+            var RGB = [
+                (i + 1) * dR + R1,
+                (i + 1) * dG + G1,
+                (i + 1) * dB + B1
+            ];
+            return '#planet a[data-level="' + i + '"] { background-color : rgb(' + RGB.map(Math.round.bind(Math)) + '); }';
+        })
+        .join('\n');
+
+    return '<style>' + css + '</style>';
+}
+
+function getTileHTML(tileMass) {
+    return '<a data-level="' + getColorLevel(tileMass) + '" title="' + tileMass.toFixed(2) + '"></a>';
+}
+
+function getTileRowHTML(row) {
     return row
-        .map(getPlanetMassTileHTML)
+        .map(getTileHTML)
         .join('\n');
 }
 
+function erode() {}
+
 function getPlanet() {
-    initPlanetMassArray.call(this);
-
-    for (var i = 40; i > 0; i--) {
-        walkFaultLine.call(this);
-    }
-
     return [
         '<div id=planet>',
-        this.state.planetMassArray.map(getPlanetMassArrayRowHTML).join('<br>'),
+        APP.planet.tiles
+        .map(getTileRowHTML)
+        .join('<br>'),
         '</div>'
     ].join('\n');
 }
 
+function init() {
+    APP.planet.tiles = [];
+
+    for (var h = 0; h < PLANET.HEIGHT; h++) {
+        var tileRow = [];
+        for (var w = 0; w < PLANET.WIDTH; w++) {
+            tileRow.push(PLANET.DEFAULT_TILE_MASS);
+        }
+
+        APP.planet.tiles.push(tileRow);
+    }
+
+    // Create terrain
+    for (var i = 20; i > 0; i--) {
+        walkFaultLine();
+    }
+
+    computeColorLevelRanges();
+}
+
 function onClick(e) {
-    var target = e.target;
-    console.log(target);
+    //var target = e.target;
+    //console.log(target);
 }
 
 function bindPlanet() {
-    var el     = document.getElementById('planet');
-    el.onclick = onClick;
+    //var el = document.getElementById('planet');
+    //el.onclick = onClick;
 }
 
 module.exports = function addPlanetGeneration(app) {
-    app.getPlanet = getPlanet;
+    APP = app;
+
+    APP.planet = {
+        get: getPlanet,
+        erode: erode,
+        computeColorLevelRanges: computeColorLevelRanges,
+        getColorCSS: getColorCSS
+    };
+
+    init();
+
     app.onDocumentCloseFuncs.push(bindPlanet);
 };

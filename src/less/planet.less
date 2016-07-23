@@ -3,30 +3,53 @@
   font-family : monospace;
   background  : black;
   color       : white;
+  text-align  : center;
 
-  .tile {
+  a {
     font-size   : 10px;
     display     : inline-block;
     width       : 16px;
     height      : 16px;
     text-align  : center;
     line-height : 16px;
+    text-decoration: none;
 
+    // Six data classes
+    // Multi-hue scheme
+    // http://colorbrewer2.org/
+
+
+    @color_l5 : #f0f9e8;
+    @color_l4 : #ccebc5;
+    @color_l3 : #a8ddb5;
+    @color_l2 : #7bccc4;
+    @color_l1 : #43a2ca;
+    @color_l0 : #0868ac;
+/*
     &[data-level="0"] {
-      background-color : #0000cc;
+      background-color : @color_l0;
     }
     &[data-level="1"] {
-      background-color : sandybrown;
+      background-color : @color_l1;
     }
     &[data-level="2"] {
-      background-color : lightgreen;
+      background-color : @color_l2;
     }
     &[data-level="3"] {
-      background-color : darkolivegreen;
+      background-color : @color_l3;
     }
     &[data-level="4"] {
-      background-color : saddlebrown;
+      background-color : @color_l4;
     }
+    &[data-level="5"],
+    &[data-level="6"],
+    &[data-level="7"],
+    &[data-level="8"],
+    &[data-level="9"],
+    &[data-level="10"] {
+      background-color : @color_l5;
+    }
+    */
   }
 
 }
